@@ -1,0 +1,43 @@
+version: '5.1'
+services:
+  mongodb:
+    image: mongo
+    env_file:
+      - ./env/mongodb.env
+    volumes:
+      - mongodbdata:/data/db
+    container_name: mongodb
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    container_name: backend
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    environment:
+      - PORT=3000
+    depends_on:
+      - mongodb
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    volumes:
+      - /app/node_modules
+      - ./frontend/src:/app/src
+    container_name: frontend
+    stdin_open: true
+    tty: true
+    depends_on:
+      - mongodb
+      - backend
+volumes:
+  mongodbdata:
+    
