@@ -6,7 +6,7 @@ const cors=require("cors")
 const Goal = require("./schema/Goal");
 
 app.use(express.json());
-app.use(cors({origin:"http://localhost:5173"}));
+app.use(cors({origin:"http://localhost:8080"}));
 
 app.get("/", (req, res) => {
   res.send("Hello World");
